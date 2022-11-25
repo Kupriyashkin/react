@@ -1,23 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import {React, useRef, useState} from 'react'
+import ClassCounter from './component/ClassCounter';
+import Counter from './component/Counter';
+import PostItem from './component/PostItem';
+import PostList from './component/PostList';
+import MyButton from './component/UI/button/MyButton';
+import MyInput from './component/UI/input/MyInput';
+import './styles/App.css';
 
 function App() {
+  const [posts, setPosts] = useState([
+    {id: 1, title: 'JavaScript', body: 'Description'},
+    {id: 2, title: 'JavaScript 2', body: 'Description'},
+    {id: 3, title: 'JavaScript 3', body: 'Description'},
+  ])
+
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
+
+
+  const addNewPost = (e) => {
+    e.preventDefault()
+    const newPost = {
+      id: Date.now(),
+      title,
+      body
+    }
+    setPosts([...posts, newPost])
+    setTitle('')
+    setBody('')
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <form>
+    {/* Управляемый компонент */}
+      <MyInput
+      value = {title}
+      onChange = {e => setTitle(e.target.value)} type="text"
+      placeholder="Post title"
+      />
+      <MyInput
+      value = {body}
+      onChange = {e => setBody(e.target.value)}
+      type="text"
+      placeholder="Body"
+      />
+
+      <MyButton onCLick={addNewPost} >New post</MyButton>
+      </form>
+
+      <PostList posts={posts} title = "Posts 1"/>
     </div>
   );
 }
