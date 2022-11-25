@@ -9,7 +9,7 @@ import './styles/App.css';
 
 function App() {
   const [posts, setPosts] = useState([
-    {id: 1, title: 'JavaScript', body: 'Description'},
+    {id: 1, title: 'JavaScript 1', body: 'Description'},
     {id: 2, title: 'JavaScript 2', body: 'Description'},
     {id: 3, title: 'JavaScript 3', body: 'Description'},
   ])
@@ -33,7 +33,7 @@ function App() {
   return (
     <div className="App">
       <form>
-    {/* Управляемый компонент */}
+    {/*Управляемый компонент*/}
       <MyInput
       value = {title}
       onChange = {e => setTitle(e.target.value)} type="text"
