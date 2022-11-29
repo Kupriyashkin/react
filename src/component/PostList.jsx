@@ -3,6 +3,13 @@ import PostItem from "./PostItem";
 
 
 const PostList = ({posts, title, remove}) => {
+
+
+    if(!posts.length){
+        return (
+            <h2 style={{textAlign: 'center', color: 'gray'}}>Здесь будут отображаться посты</h2>
+        )
+    }
     return(
         <div>
         <h1 style={{textAlign: 'center'}}>{title}</h1>
