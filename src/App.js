@@ -6,6 +6,7 @@ import PostItem from './component/PostItem';
 import PostList from './component/PostList';
 import MyButton from './component/UI/button/MyButton';
 import MyInput from './component/UI/input/MyInput';
+import MySelect from './component/UI/select/MySelect';
 import './styles/App.css';
 
 function App() {
@@ -15,12 +16,19 @@ function App() {
     {id: 3, title: 'JavaScript 3', body: 'Description'},
   ])
 
+  const [selectedSort, setSelectedSort] = useState('')
+
   const createPost = (newPost) =>{
     setPosts([...posts, newPost])
   }
 
   const removePost = (post) =>{
-    setPosts(post.filter(p => p.id !==post.id))
+    setPosts(posts.filter(p => p.id !==post.id))
+  }
+
+  const sortPosts =(sort) => {
+    setSelectedSort(sort);
+    setPosts([...posts].sort((a,b) => a[sort].localeCompare(b[sort])))
   }
 
   return (
@@ -28,7 +36,24 @@ function App() {
 
       <PostForm create={createPost}/>
 
-      <PostList remove={removePost} posts={posts} title = "Posts 1"/>
+      <hr style={{margin: '15px 0'}}/>
+      <div>
+        <MySelect
+        value={selectedSort}
+        onChange={sortPosts}
+        defaultValue="Сортировка"
+        options={[
+          {value: 'title', name:'По названию'},
+          {value: 'body', name:'По описанию'}
+
+        ]}
+        />
+      </div>
+
+      {posts.length
+      ?<PostList remove={removePost} posts={posts} title = "Posts 1"/>
+      : <h2 style={{textAlign: 'center', color: 'gray'}}>Здесь будут отображаться посты</h2>
+      }
 
     </div>
   );
