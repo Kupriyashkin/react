@@ -1,14 +1,10 @@
-import {React, useMemo, useRef, useState} from 'react'
-import ClassCounter from './component/ClassCounter';
-import Counter from './component/Counter';
+import {React, useState} from 'react'
 import PostFilter from './component/PostFilter';
 import PostForm from './component/PostForm';
-import PostItem from './component/PostItem';
 import PostList from './component/PostList';
 import MyButton from './component/UI/button/MyButton';
-import MyInput from './component/UI/input/MyInput';
 import MyModal from './component/UI/MyModal/MyModal';
-import MySelect from './component/UI/select/MySelect';
+import { usePosts } from './hooks/usePosts';
 import './styles/App.css';
 
 function App() {
@@ -22,18 +18,7 @@ const [filter, setFilter] = useState({sort:'', query:''})
 
 const [modal, setModal] = useState(false)
 
-  const sortedPosts = useMemo(() => {
-    if(filter.sort) {
-      return [...posts].sort((a,b) => a[filter.sort].localeCompare(b[filter.sort]))
-    }
-    return posts;
-  },
-[filter.sort, posts]);
-
-  const sortedAndSearchedPosts = useMemo(()=>{
-    return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query.toLowerCase()))
-  },
-  [filter.query, sortedPosts])
+const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
 
   const createPost = (newPost) =>{
     setPosts([...posts, newPost])
@@ -47,13 +32,17 @@ const [modal, setModal] = useState(false)
 
   return (
     <div className="App">
+
       <MyButton style={{marginTop: '15px', marginLeft: '10px'}} onClick={()=> setModal(true)}>
         Create new post
       </MyButton>
+
       <MyModal visible={modal} setVisible={setModal}>
       <PostForm create={createPost}/>
       </MyModal>
+
       <hr style={{margin: '15px 0'}}/>
+
       <PostFilter filter={filter} setFilter={setFilter}/>
       <PostList remove={removePost} posts={sortedAndSearchedPosts} title = "Posts 1"/>
     </div>
