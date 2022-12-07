@@ -1,67 +1,26 @@
-import {React, useEffect, useState} from 'react'
-import PostService from './API/PostService';
-import PostFilter from './component/PostFilter';
-import PostForm from './component/PostForm';
-import PostList from './component/PostList';
-import MyButton from './component/UI/button/MyButton';
-import Loader from './component/UI/Loader/Loader';
-import MyModal from './component/UI/MyModal/MyModal';
-import { useFetching } from './hooks/useFetching';
-import { usePosts } from './hooks/usePosts';
-import './styles/App.css';
+import React from 'react'
+import { BrowserRouter, Link, Route } from 'react-router-dom';
+import About from './pages/About';
+import Posts from './pages/Posts';
+import './styles/App.css'
 
 function App() {
-
-const [posts, setPosts] = useState([])
-const [filter, setFilter] = useState({sort:'', query:''})
-const [modal, setModal] = useState(false)
-const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
-
-const [fetchPosts, isPostLoading, postError] = useFetching(async ()=>{
-  const response = await PostService.getAll()
-  setPosts(response.data)
-})
-
-useEffect(()=> {
-  fetchPosts()
-}, [])
-
-const createPost = (newPost) =>{
-    setPosts([...posts, newPost])
-    setModal(false)
-}
-
-const removePost = (post) =>{
-    setPosts(posts.filter(p => p.id !==post.id))
-}
-
-
   return (
-    <div className="App">
-
-      <MyButton style={{marginTop: '15px', marginLeft: '10px'}} onClick={()=> setModal(true)}>
-        Create new post
-      </MyButton>
-
-      <MyModal visible={modal} setVisible={setModal}>
-      <PostForm create={createPost}/>
-      </MyModal>
-
-      <hr style={{margin: '15px 0'}}/>
-
-      <PostFilter filter={filter} setFilter={setFilter}/>
-
-      {postError &&
-        <h2>Error ${postError}</h2>
-      }
-
-      {isPostLoading
-      ? <div style={{display: 'flex', justifyContent: 'center', marginTop: '50px'}}><Loader/></div>
-      : <PostList remove={removePost} posts={sortedAndSearchedPosts} title = "Posts"/>
-      }
-
-    </div>
-  );
+    <BrowserRouter>
+      <div className='navbar'>
+        <div className='navbar__links'>
+          <Link href='/about'>About</Link>
+          <Link href='/posts'>Posts</Link>
+        </div>
+      </div>
+      <Route path='/about'>
+        <About/>
+      </Route>
+      <Route path='/posts'>
+        <Posts/>
+      </Route>
+    </BrowserRouter>
+  )
 }
 
 export default App;
