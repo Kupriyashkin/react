@@ -9,6 +9,7 @@ function App() {
         <div className='navbar__links'>
           <Link href='/about'>About</Link>
           <Link href='/posts'>Posts</Link>
+          <Link href='/radio'>Radio</Link>
         </div>
       </div>
       <Outlet/>

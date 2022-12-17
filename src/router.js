@@ -3,6 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 import About from "./pages/About";
 import Posts from "./pages/Posts";
 import App from "./App";
+import Radio from "./pages/Radio";
 
  const router = createBrowserRouter([
     {
@@ -16,6 +17,10 @@ import App from "./App";
             {
                 index: true,
                 element: <Posts/>,
+            },
+            {
+                path:'radio/',
+                element: <Radio/>
             }
         ]
     }
